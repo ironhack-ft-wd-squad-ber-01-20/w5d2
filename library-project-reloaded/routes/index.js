@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Book = require("../models/Book");
+const Author = require("../models/Author");
 
 /* GET home page */
 router.get("/", (req, res, next) => {
@@ -25,6 +26,7 @@ router.get("/books/add", (req, res, next) => {
 
 router.get("/books/:id", (req, res, next) => {
   Book.findById(req.params.id)
+    .populate("author")
     .then(bookDocument => {
       res.render("bookDetails.hbs", bookDocument);
     })
@@ -34,13 +36,30 @@ router.get("/books/:id", (req, res, next) => {
 });
 
 router.get("/books/:bookId/edit", (req, res, next) => {
-  Book.findById(req.params.bookId)
-    .then(bookDocument => {
-      res.render("bookEdit.hbs", bookDocument);
+  const promises = [Author.find({}), Book.findById(req.params.bookId)];
+
+  Promise.all(promises)
+    .then(results => {
+      res.render("bookEdit.hbs", {
+        book: results[1],
+        authors: results[0]
+      });
     })
     .catch(err => {
       next(err);
     });
+  // Book.findById(req.params.bookId)
+  //   .then(bookDocument => {
+  //     return Author.find().then(authors => {
+  //       res.render("bookEdit.hbs", {
+  //         book: bookDocument,
+  //         authors: authors
+  //       });
+  //     });
+  //   })
+  //   .catch(err => {
+  //     next(err);
+  //   });
 });
 
 router.get("/books/:bookId/delete", (req, res, next) => {
