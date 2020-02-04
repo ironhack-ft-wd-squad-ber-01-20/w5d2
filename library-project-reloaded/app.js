@@ -56,4 +56,10 @@ app.locals.title = "Library Project";
 const index = require("./routes/index");
 app.use("/", index);
 
+const bookRoutes = require("./routes/books");
+app.use("/", bookRoutes);
+
+const authRoutes = require("./routes/auth");
+app.use("/", authRoutes);
+
 module.exports = app;
