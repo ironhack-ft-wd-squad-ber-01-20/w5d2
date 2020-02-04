@@ -73,7 +73,7 @@ const books = [
 
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/library-project", () => {
+mongoose.connect("mongodb://localhost:27017/library-project-reloaded", () => {
   console.log("Connected to DB");
 });
 

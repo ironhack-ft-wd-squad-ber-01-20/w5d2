@@ -10,7 +10,7 @@ const logger = require("morgan");
 const path = require("path");
 
 mongoose
-  .connect("mongodb://localhost/library-project", { useNewUrlParser: true })
+  .connect("mongodb://localhost/library-project-reloaded", { useNewUrlParser: true })
   .then(x => {
     console.log(
       `Connected to Mongo! Database name: "${x.connections[0].name}"`
