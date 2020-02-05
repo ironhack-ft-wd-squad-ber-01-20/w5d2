@@ -30,7 +30,7 @@ router.post("/login", (req, res, next) => {
     .then(foundUser => {
       // if (foundUser === null)
       if (!foundUser) {
-        res.render("signup.hbs", {
+        res.render("login.hbs", {
           errorMessage: "Invalid credentials"
         });
         return;
@@ -42,7 +42,7 @@ router.post("/login", (req, res, next) => {
     })
     .then(match => {
       if (!match) {
-        res.render("signup.hbs", { errorMessage: "Invalid credentials" });
+        res.render("login.hbs", { errorMessage: "Invalid credentials" });
         return;
       }
       // log user in
