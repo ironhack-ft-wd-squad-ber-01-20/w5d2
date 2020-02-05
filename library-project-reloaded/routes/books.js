@@ -23,7 +23,10 @@ router.get("/books/:id", (req, res, next) => {
   Book.findById(req.params.id)
     .populate("author")
     .then(bookDocument => {
-      res.render("bookDetails.hbs", bookDocument);
+      res.render("bookDetails.hbs", {
+        book: bookDocument,
+        user: req.session.user
+      });
     })
     .catch(err => {
       next(err);
@@ -32,6 +35,11 @@ router.get("/books/:id", (req, res, next) => {
 
 router.get("/books/:bookId/edit", (req, res, next) => {
   const promises = [Author.find({}), Book.findById(req.params.bookId)];
+
+  if (!req.session.user) {
+    res.redirect("/");
+    return;
+  }
 
   Promise.all(promises)
     .then(results => {
@@ -58,6 +66,10 @@ router.get("/books/:bookId/edit", (req, res, next) => {
 });
 
 router.get("/books/:bookId/delete", (req, res, next) => {
+  if (!req.session.user) {
+    res.redirect("/");
+    return;
+  }
   Book.deleteOne({ _id: req.params.bookId })
     .then(() => {
       res.redirect("/books");

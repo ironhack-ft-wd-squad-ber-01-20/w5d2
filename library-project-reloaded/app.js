@@ -35,6 +35,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
+
+app.use(
+  session({
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000
+    },
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+  })
+);
+
 // Express View engine setup
 
 app.use(
